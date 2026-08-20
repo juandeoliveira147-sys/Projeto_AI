@@ -23,7 +23,9 @@ class coracao_da_AI():
         cursor.execute("""CREATE TABLE IF NOT EXISTS bancodedadosdaAI(
                         
                     nome varchar (100),
-                    idade integer
+                    idade integer,
+                    historico text,
+                    lembretes text
                     );
                     """)
         conexao.commit()
