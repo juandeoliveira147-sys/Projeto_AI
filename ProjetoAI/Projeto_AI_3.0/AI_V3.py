@@ -59,7 +59,7 @@ class coracao_da_AI():
 
         conec = conectar()
         cursor = conec.cursor()
-        cursor.execute("""CREATE TABLE bancodedadosdaAI(
+        cursor.execute("""CREATE TABLE IF NOT EXISTS bancodedadosdaAI(
 
             nome varchar(100),
             idade integer,
@@ -86,15 +86,31 @@ class coracao_da_AI():
     def lembretes():
         conexao = conectar()
         cursor = conexao.cursor()
-        cursor.execute("select lembretes from bancodedadosdaAI")
+
+        cursor.execute("SELECT lembretes FROM bancodedadosdaAI")
         memoria = cursor.fetchall()
+
+        if not memoria or memoria[0][0] is None:
+            print("\nSem lembretes")
+            time.sleep(2)
+            cursor.close()
+            conexao.close()
+            return
+
         todos_lembretes = memoria[0][0]
+
         for linha in todos_lembretes.split('|'):
-            lembrete = linha.strip().replace('[', "").replace(']','')
+            lembrete = linha.strip().replace('[', "").replace(']', '')
+
             if lembrete:
                 print(lembrete)
+
         time.sleep(2)
+
+        cursor.close()
+        conexao.close()
         return
+        
         
 
 
@@ -121,6 +137,15 @@ class coracao_da_AI():
         1. Você deve criar o novo lembrete calculando a data com base no dia de hoje ({data_atual}).
         2. Você DEVE incluir uma linha especial no FINAL da sua resposta escrita exatamente assim:
         REMANEJAR_LEMBRETES: [Aqui você repete TODOS os lembretes antigos exatamente como estão acima] | [Aqui você adiciona o novo lembrete]
+        Quando precisar atualizar os lembretes, siga EXATAMENTE este formato:
+
+        RESPOSTA:
+        [sua resposta normal para o usuário]
+
+        REMANEJAR_LEMBRETES:
+        [todos os lembretes antigos] | [novo lembrete]
+
+        NÃO escreva absolutamente nada depois da última linha de REMANEJAR_LEMBRETES.
         3. Se o usuário NÃO pedir nenhum lembrete, apenas converse normalmente e NÃO adicione a linha especial.
 
         [HISTÓRICO DA CONVERSA]
@@ -133,6 +158,7 @@ class coracao_da_AI():
 
         [PERGUNTA DO USUÁRIO]
         {pergunta}
+        
         """
 
 
