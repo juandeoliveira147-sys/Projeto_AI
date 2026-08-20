@@ -529,8 +529,8 @@ encerrar_conexao()
 ## 1. Clone o projeto
 
 ```bash
-git clone https://github.com/juandeoliveira147-sys/AI-3.0.git
-cd AI-3.0
+git clone https://github.com/juandeoliveira147-sys/Projeto_AI.git
+cd Projeto_AI_3.0
 ```
 
 ---
